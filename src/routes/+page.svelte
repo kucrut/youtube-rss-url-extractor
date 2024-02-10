@@ -117,14 +117,18 @@
 	<div>
 		<h3>Success!</h3>
 		<p class="result">
-			<span>RSS URL</span>
-			<input readonly value={result_url} onclick={handle_click_result_url} />
+			<label for="result-url">RSS URL</label>
+			<input readonly id="result-url" value={result_url} onclick={handle_click_result_url} />
 			<button type="button" use:copy_to_cb>Copy URL</button>
 		</p>
 	</div>
 {/if}
 
 <style>
+	h1 {
+		text-align: center;
+	}
+
 	.field {
 		display: flex;
 		flex-direction: column;
@@ -133,12 +137,17 @@
 
 	.result {
 		display: flex;
+		flex-direction: row;
 		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.result label {
+		align-self: end;
 	}
 
 	.result input {
-		margin-inline-start: auto;
-		flex-grow: 1;
 		border: unset;
+		flex-grow: 1;
 	}
 </style>
