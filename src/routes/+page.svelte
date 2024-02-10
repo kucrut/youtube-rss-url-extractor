@@ -128,6 +128,7 @@
 
 		{#if error_message}
 			<div class="notification is-danger is-light">
+				<button class="delete" onclick={() => (error_message = '')}>Remove</button>
 				<p>{error_message}</p>
 			</div>
 		{/if}
