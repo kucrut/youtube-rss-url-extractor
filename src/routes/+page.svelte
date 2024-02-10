@@ -93,42 +93,59 @@
 	<title>YouTube RSS URL Extractor</title>
 </svelte:head>
 
-<h1>YouTube RSS URL Extractor</h1>
+<header>
+	<a href="https://github.com/kucrut/youtube-rss-url-extractor" target="_blank">Fork on GitHub</a>
+</header>
 
-<form method="post" use:enhance={handle_submit}>
-	<p class="field">
-		<label for="yt-url">YouTube URL:</label>
-		<input
-			disabled={is_submitting}
-			id="yt-url"
-			name="input_url"
-			type="url"
-			value={input_url}
-			onchange={handle_change}
-			oninput={handle_change}
-		/>
-	</p>
-	<p>
-		<button disabled={is_submitting || !can_submit} type="submit">Get RSS URL</button>
-	</p>
-</form>
+<main>
+	<h1>YouTube RSS URL Extractor</h1>
 
-{#if error_message}
-	<p class="error">{error_message}</p>
-{/if}
-
-{#if result_url}
-	<div>
-		<h3>Success!</h3>
-		<p class="result">
-			<label for="result-url">RSS URL</label>
-			<input readonly id="result-url" value={result_url} onclick={handle_click_result_url} />
-			<button type="button" use:copy_to_cb>Copy URL</button>
+	<form method="post" use:enhance={handle_submit}>
+		<p class="field">
+			<label for="yt-url">YouTube URL:</label>
+			<input
+				disabled={is_submitting}
+				id="yt-url"
+				name="input_url"
+				type="url"
+				value={input_url}
+				onchange={handle_change}
+				oninput={handle_change}
+			/>
 		</p>
-	</div>
-{/if}
+		<p>
+			<button disabled={is_submitting || !can_submit} type="submit">Get RSS URL</button>
+		</p>
+	</form>
+
+	{#if error_message}
+		<p class="error">{error_message}</p>
+	{/if}
+
+	{#if result_url}
+		<div>
+			<h3>Success!</h3>
+			<p class="result">
+				<label for="result-url">RSS URL</label>
+				<input readonly id="result-url" value={result_url} onclick={handle_click_result_url} />
+				<button type="button" use:copy_to_cb>Copy URL</button>
+			</p>
+		</div>
+	{/if}
+</main>
 
 <style>
+	header {
+		display: flex;
+		justify-content: end;
+		padding: 0.5rem;
+		margin-block-end: 1rem;
+	}
+
+	header a::after {
+		content: '\00a0\1f865';
+	}
+
 	h1 {
 		text-align: center;
 	}
