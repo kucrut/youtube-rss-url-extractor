@@ -127,7 +127,9 @@
 		</form>
 
 		{#if error_message}
-			<p class="error">{error_message}</p>
+			<div class="notification is-danger is-light">
+				<p>{error_message}</p>
+			</div>
 		{/if}
 
 		{#if result_url}
@@ -168,5 +170,9 @@
 	h1,
 	h3 {
 		text-align: center;
+	}
+
+	.notification {
+		margin-block-start: 2rem;
 	}
 </style>
