@@ -99,7 +99,7 @@
 	</header>
 
 	<main>
-		<h1>YouTube RSS URL Extractor</h1>
+		<h1 class="title">YouTube RSS URL Extractor</h1>
 
 		<form method="post" use:enhance={handle_submit}>
 			<div class="field">
