@@ -1,5 +1,6 @@
 <script>
 	import { applyAction, enhance } from '$app/forms';
+	import { copy_to_cb } from '$lib/actions/copy-to-clipboard.js';
 
 	const { form } = $props();
 
@@ -8,29 +9,6 @@
 	let input_url = $state('');
 	let is_submitting = $state(false);
 	let result_url = $state('');
-
-	/** @type {import('svelte/action').Action} */
-	function copy_to_cb(node) {
-		async function handle_click() {
-			if (!(node.previousElementSibling instanceof HTMLInputElement)) {
-				return;
-			}
-
-			try {
-				await navigator.clipboard.writeText(node.previousElementSibling.value);
-			} catch (err) {
-				console.error(err);
-			}
-		}
-
-		node.addEventListener('click', handle_click);
-
-		return {
-			destroy() {
-				node.removeEventListener('click', handle_click);
-			}
-		};
-	}
 
 	/** @param {Event & {currentTarget: EventTarget & HTMLInputElement}} event */
 	function handle_change(event) {
@@ -66,10 +44,10 @@
 				is_submitting = false;
 			};
 		} catch (error) {
-			is_submitting = false;
-			console.log(error);
-			// Maybe TODO: Show error.
 			cancel();
+			is_submitting = false;
+			// Maybe TODO: Show error.
+			console.log(error);
 		}
 	}
 
