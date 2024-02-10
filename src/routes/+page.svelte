@@ -33,15 +33,19 @@
 
 			if (list) {
 				cancel();
-				result_url = `https://www.youtube.com/feeds/videos.xml?playlist_id=${list}`;
-				is_submitting = false;
 				input_url = '';
+				is_submitting = false;
+				result_url = `https://www.youtube.com/feeds/videos.xml?playlist_id=${list}`;
 				return;
 			}
 
 			return async ({ result }) => {
 				await applyAction(result);
 				is_submitting = false;
+
+				if (result_url) {
+					input_url = '';
+				}
 			};
 		} catch (error) {
 			cancel();
