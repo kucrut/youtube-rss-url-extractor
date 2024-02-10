@@ -102,21 +102,28 @@
 		<h1>YouTube RSS URL Extractor</h1>
 
 		<form method="post" use:enhance={handle_submit}>
-			<p class="field">
-				<label for="yt-url">YouTube URL:</label>
-				<input
-					disabled={is_submitting}
-					id="yt-url"
-					name="input_url"
-					type="url"
-					value={input_url}
-					onchange={handle_change}
-					oninput={handle_change}
-				/>
-			</p>
-			<p>
-				<button disabled={is_submitting || !can_submit} type="submit">Get RSS URL</button>
-			</p>
+			<div class="field">
+				<label class="label" for="yt-url">YouTube URL:</label>
+				<div class="control">
+					<input
+						class="input"
+						disabled={is_submitting}
+						id="yt-url"
+						name="input_url"
+						type="url"
+						value={input_url}
+						onchange={handle_change}
+						oninput={handle_change}
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<div class="control">
+					<button class="button is-primary" disabled={is_submitting || !can_submit} type="submit"
+						>Get RSS URL</button
+					>
+				</div>
+			</div>
 		</form>
 
 		{#if error_message}
@@ -150,12 +157,6 @@
 
 	h1 {
 		text-align: center;
-	}
-
-	.field {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
 	}
 
 	.result {
