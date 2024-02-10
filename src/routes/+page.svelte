@@ -1,0 +1,166 @@
+<script>
+	import { applyAction, enhance } from '$app/forms';
+
+	const { form } = $props();
+
+	let can_submit = $state(false);
+	let error_message = $state('');
+	let input_url = $state('');
+	let is_submitting = $state(false);
+	let result_url = $state('');
+
+	/** @type {import('svelte/action').Action} */
+	function copy_to_cb(node) {
+		async function handle_click() {
+			if (!(node.previousElementSibling instanceof HTMLInputElement)) {
+				return;
+			}
+
+			try {
+				await navigator.clipboard.writeText(node.previousElementSibling.value);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+
+		node.addEventListener('click', handle_click);
+
+		return {
+			destroy() {
+				node.removeEventListener('click', handle_click);
+			}
+		};
+	}
+
+	/** @param {Event & {currentTarget: EventTarget & HTMLInputElement}} event */
+	function handle_change(event) {
+		input_url = event.currentTarget.value;
+	}
+
+	/** @type {import('@sveltejs/kit').SubmitFunction} */
+	function handle_submit({ cancel }) {
+		if (!can_submit) {
+			cancel();
+			return;
+		}
+
+		error_message = '';
+		is_submitting = true;
+		result_url = '';
+
+		try {
+			const url = new URL(input_url);
+			// TODO: Check hostname for YT hostname variations.
+			const list = url.searchParams.get('list');
+
+			if (list) {
+				cancel();
+				result_url = `https://www.youtube.com/feeds/videos.xml?playlist_id=${list}`;
+				is_submitting = false;
+				input_url = '';
+				return;
+			}
+
+			return async ({ result }) => {
+				await applyAction(result);
+				is_submitting = false;
+			};
+		} catch (error) {
+			is_submitting = false;
+			console.log(error);
+			// Maybe TODO: Show error.
+			cancel();
+		}
+	}
+
+	/** @param {Event & {currentTarget: EventTarget & HTMLInputElement}} event */
+	function handle_click_result_url(event) {
+		event.currentTarget.select();
+	}
+
+	$effect(() => {
+		if (!input_url) {
+			can_submit = false;
+			return;
+		}
+
+		try {
+			new URL(input_url);
+			can_submit = true;
+		} catch (error) {
+			can_submit = false;
+		}
+	});
+
+	$effect(() => {
+		if (form?.input_url) {
+			input_url = form.input_url.toString();
+		}
+
+		if (form?.success && form?.result_url) {
+			result_url = form.result_url;
+		}
+
+		if (form?.error && form?.message) {
+			error_message = form.message;
+		}
+	});
+</script>
+
+<svelte:head>
+	<title>YouTube RSS URL Extractor</title>
+</svelte:head>
+
+<h1>YouTube RSS URL Extractor</h1>
+
+<form method="post" use:enhance={handle_submit}>
+	<p class="field">
+		<label for="yt-url">YouTube URL:</label>
+		<input
+			disabled={is_submitting}
+			id="yt-url"
+			name="input_url"
+			type="url"
+			value={input_url}
+			onchange={handle_change}
+			oninput={handle_change}
+		/>
+	</p>
+	<p>
+		<button disabled={is_submitting || !can_submit} type="submit">Get RSS URL</button>
+	</p>
+</form>
+
+{#if error_message}
+	<p class="error">{error_message}</p>
+{/if}
+
+{#if result_url}
+	<div>
+		<h3>Success!</h3>
+		<p class="result">
+			<span>RSS URL</span>
+			<input readonly value={result_url} onclick={handle_click_result_url} />
+			<button type="button" use:copy_to_cb>Copy URL</button>
+		</p>
+	</div>
+{/if}
+
+<style>
+	.field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.result {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.result input {
+		margin-inline-start: auto;
+		flex-grow: 1;
+		border: unset;
+	}
+</style>
