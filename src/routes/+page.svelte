@@ -131,14 +131,24 @@
 		{/if}
 
 		{#if result_url}
-			<div>
-				<h3>Success!</h3>
-				<p class="result">
-					<label for="result-url">RSS URL</label>
-					<input readonly id="result-url" value={result_url} onclick={handle_click_result_url} />
-					<button type="button" use:copy_to_cb>Copy URL</button>
-				</p>
-			</div>
+			<section>
+				<h3 class="subtitle is-3">Success!</h3>
+				<label class="label" for="result-url">RSS URL</label>
+				<div class="field has-addons">
+					<div class="control is-expanded">
+						<input
+							readonly
+							class="input"
+							id="result-url"
+							value={result_url}
+							onclick={handle_click_result_url}
+						/>
+					</div>
+					<div class="control">
+						<button class="button is-info is-light" type="button" use:copy_to_cb>Copy URL</button>
+					</div>
+				</div>
+			</section>
 		{/if}
 	</main>
 </div>
@@ -155,23 +165,8 @@
 		content: '\00a0\1f865';
 	}
 
-	h1 {
+	h1,
+	h3 {
 		text-align: center;
-	}
-
-	.result {
-		display: flex;
-		flex-direction: row;
-		gap: 0.5rem;
-		align-items: center;
-	}
-
-	.result label {
-		align-self: end;
-	}
-
-	.result input {
-		border: unset;
-		flex-grow: 1;
 	}
 </style>
