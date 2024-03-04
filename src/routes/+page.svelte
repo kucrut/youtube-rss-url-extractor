@@ -161,10 +161,14 @@
 </div>
 
 <style>
+	.container {
+		padding-inline: 1.5rem;
+	}
+
 	header {
 		display: flex;
 		justify-content: end;
-		padding: 0.5rem;
+		padding-block: 1rem;
 		margin-block-end: 1rem;
 	}
 
