@@ -1,16 +1,13 @@
 /**
- * @type {import('svelte/action').Action}
+ * @type {import('svelte/action').Action<HTMLButtonElement, {content: string}>}
  *
  * @param {HTMLButtonElement} node
+ * @param {{content: string}} param
  */
-export function copy_to_cb(node) {
+export function copy_to_cb(node, param) {
 	async function handle_click() {
-		if (!(node.previousElementSibling instanceof HTMLInputElement)) {
-			return;
-		}
-
 		try {
-			await navigator.clipboard.writeText(node.previousElementSibling.value);
+			await navigator.clipboard.writeText(param.content);
 		} catch (err) {
 			console.error(err);
 		}
