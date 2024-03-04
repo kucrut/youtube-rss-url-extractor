@@ -148,7 +148,11 @@
 						/>
 					</div>
 					<div class="control">
-						<button class="button is-info is-light" type="button" use:copy_to_cb>Copy URL</button>
+						<button
+							class="button is-info is-light"
+							type="button"
+							use:copy_to_cb={{ content: result_url }}>Copy URL</button
+						>
 					</div>
 				</div>
 			</section>
